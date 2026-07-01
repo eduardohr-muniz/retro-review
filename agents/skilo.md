@@ -1,6 +1,6 @@
 ---
 name: skilo
-description: `init → explore → propose → apply` Skill improver. A four-command flow — `/skilo-init` bootstraps the working folder and asks for your code review agent, `/skilo-explore` freezes the state the model delivered, `/skilo-propose` detects what you changed and writes proposals in Given/When/Then format, `/skilo-apply` adjusts the skills, validates with evals, archives a lean summary and cleans up the cycle. Use it WHENEVER the model delivers a spec, you review/fix the code before pushing to git, and you want its mistakes to become skill rules.
+description: `init → explore → propose → apply` Skill improver. A four-command flow — `/skilo:init` bootstraps the working folder and asks for your code review agent, `/skilo:explore` freezes the state the model delivered, `/skilo:propose` detects what you changed and writes proposals in Given/When/Then format, `/skilo:apply` adjusts the skills, validates with evals, archives a lean summary and cleans up the cycle. Use it WHENEVER the model delivers a spec, you review/fix the code before pushing to git, and you want its mistakes to become skill rules.
 tools: Read, Grep, Glob, Bash, Skill
 model: inherit
 color: blue
@@ -13,7 +13,7 @@ skills:
 
 Closes the loop between your code review and your skills. The model implements a spec; you review and fix it by hand before the push. Skilo captures the gap between **what the model delivered** and **what you left correct**, separates a real mistake from your own preference, and turns only the systematic mistakes into eval-validated skill adjustments.
 
-Four commands: `/skilo-init` → `/skilo-explore` → `/skilo-propose` → `/skilo-apply`.
+Four commands: `/skilo:init` → `/skilo:explore` → `/skilo:propose` → `/skilo:apply`.
 
 ## File structure
 
@@ -35,7 +35,7 @@ The feature name comes from the current git branch (slugified — e.g. `feature/
 
 ### `config.yaml`
 
-Before any phase, read `skilo/config.yaml` at the root. It says **which is the code review agent** and **where to save** the cycle artifacts. If it doesn't exist, run `/skilo-init` (or create one on first run with the defaults) and tell the user:
+Before any phase, read `skilo/config.yaml` at the root. It says **which is the code review agent** and **where to save** the cycle artifacts. If it doesn't exist, run `/skilo:init` (or create one on first run with the defaults) and tell the user:
 
 ```yaml
 # The user's code review agent — skilo suggests improvements for it.
@@ -58,13 +58,13 @@ The evals that skilo **creates** go to the target skill, not to `skilo/` — eac
 
 ---
 
-## `/skilo-init`
+## `/skilo:init`
 
-Bootstraps the repository for the cycle. Run it once per repo, before the first `/skilo-explore`.
+Bootstraps the repository for the cycle. Run it once per repo, before the first `/skilo:explore`.
 
 1. If `skilo/config.yaml` already exists, the repo is already initialized — ask before reconfiguring (overwriting it).
 2. **Ask the user for their code review agent** (name or path). This becomes `code_review_agent` in `config.yaml`.
-3. Scaffold the structure via `scripts/skilo-init.sh --agent "<chosen-agent>"` (idempotent; won't overwrite an existing config without `--force`):
+3. Scaffold the structure via `"${CLAUDE_PLUGIN_ROOT}"/scripts/skilo-init.sh --agent "<chosen-agent>"` (idempotent; won't overwrite an existing config without `--force`):
    ```
    skilo/
    ├── config.yaml
@@ -77,7 +77,7 @@ Bootstraps the repository for the cycle. Run it once per repo, before the first 
 
 ---
 
-## `/skilo-explore`
+## `/skilo:explore`
 
 Freezes the current state — what the model just delivered, before you fix it.
 
@@ -100,7 +100,7 @@ Freezes the current state — what the model just delivered, before you fix it.
 
 ---
 
-## `/skilo-propose`
+## `/skilo:propose`
 
 Detects what you changed, separates mistake from preference, and writes the proposals in **Given/When/Then** format.
 
@@ -176,7 +176,7 @@ After that, **you refine `skilo-propose.md` with me** — cut, rewrite the rule,
 
 ---
 
-## `/skilo-apply`
+## `/skilo:apply`
 
 Applies only what remains in `skilo-propose.md`, validates with an eval proving both sides, **archives a lean summary** and **cleans up the cycle**.
 
@@ -228,7 +228,7 @@ At the end, always in this order:
    ```bash
    rm -rf skilo/cycles/<feature>
    ```
-   `cycles/` is left ready for the next `/skilo-explore`.
+   `cycles/` is left ready for the next `/skilo:explore`.
 5. **Report** per skill: rule added, eval fail-before/pass-after, final location, whether the code review agent was adjusted, and the path of the archived summary.
 
 ---

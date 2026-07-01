@@ -1,0 +1,12 @@
+{
+  "name": "skilo",
+  "displayName": "Skilo",
+  "description": "Turn your code reviews into skill rules that stick. A four-command cycle — init → explore → propose → apply — that captures the gap between what the model delivered and what you fixed by hand, and turns systematic mistakes into eval-validated skill rules.",
+  "author": {
+    "name": "Eduardo Muniz",
+    "url": "https://github.com/eduardohr-muniz"
+  },
+  "homepage": "https://github.com/eduardohr-muniz/skilo",
+  "repository": "https://github.com/eduardohr-muniz/skilo",
+  "keywords": ["skills", "code-review", "workflow", "evals"]
+}

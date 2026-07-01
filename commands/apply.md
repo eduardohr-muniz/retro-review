@@ -7,13 +7,13 @@ tags: [workflow, skilo, skills]
 
 Applies only what remains in `skilo-propose.md`, validates each adjustment with an eval that proves both sides (fail before → pass after), archives a lean summary and **cleans up the cycle**.
 
-**Input**: none. Requires a `skilo/cycles/<feature>/skilo-propose.md` refined by `/skilo-propose`.
+**Input**: none. Requires a `skilo/cycles/<feature>/skilo-propose.md` refined by `/skilo:propose`.
 
 **Steps**
 
 0. **Check the proposals**
 
-   If `skilo/cycles/<feature>/skilo-propose.md` doesn't exist or is empty, there's nothing to apply. Ask to run `/skilo-propose` first and STOP.
+   If `skilo/cycles/<feature>/skilo-propose.md` doesn't exist or is empty, there's nothing to apply. Ask to run `/skilo:propose` first and STOP.
 
 1. **Normalize the target skill**
 
@@ -58,7 +58,7 @@ Applies only what remains in `skilo-propose.md`, validates each adjustment with 
       ```bash
       rm -rf skilo/cycles/<feature>
       ```
-      `cycles/` is left ready for the next `/skilo-explore`.
+      `cycles/` is left ready for the next `/skilo:explore`.
 
 **Output (success)**
 

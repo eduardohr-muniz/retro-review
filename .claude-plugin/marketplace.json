@@ -1,0 +1,15 @@
+{
+  "name": "skilo",
+  "owner": {
+    "name": "Eduardo Muniz",
+    "email": "eduardohr.muniz@gmail.com"
+  },
+  "description": "Skilo — turn your code reviews into skill rules that stick.",
+  "plugins": [
+    {
+      "name": "skilo",
+      "source": "./",
+      "description": "Turn your code reviews into skill rules that stick — init → explore → propose → apply."
+    }
+  ]
+}

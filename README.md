@@ -27,33 +27,33 @@ Those fixes are **gold**. They're the exact difference between what the model pr
 Four commands, one cycle per feature:
 
 ```
-/skilo-init      ── one-time setup: scaffold skilo/, pick your code review agent
+/skilo:init      ── one-time setup: scaffold skilo/, pick your code review agent
       │
       ▼
-/skilo-explore   ── freeze what the model delivered (before you touch it)
+/skilo:explore   ── freeze what the model delivered (before you touch it)
       │
       │   … you review and fix the code by hand …
       │
       ▼
-/skilo-propose   ── diff your fixes, separate mistake from preference,
+/skilo:propose   ── diff your fixes, separate mistake from preference,
       │              write Given/When/Then proposals
       │
       │   … you refine the proposals together with skilo …
       │
       ▼
-/skilo-apply     ── validate each rule with an eval (fail-before → pass-after),
+/skilo:apply     ── validate each rule with an eval (fail-before → pass-after),
                      archive a lean summary, wipe the cycle
 ```
 
-### 1. `/skilo-init` — bootstrap
+### 1. `/skilo:init` — bootstrap
 
 Run once per repo. Scaffolds the `skilo/` working folder and asks **which is your code review agent** — the agent skilo will later suggest checks for.
 
-### 2. `/skilo-explore` — freeze the delivery
+### 2. `/skilo:explore` — freeze the delivery
 
 Snapshots the worktree exactly as the model handed it to you, using `git add -N` so even untracked files show up in the diff without committing. This is the zero mark. **Nothing is analyzed here** — you're just marking the "before".
 
-### 3. `/skilo-propose` — capture the gap
+### 3. `/skilo:propose` — capture the gap
 
 After you've fixed the code by hand, skilo diffs your fixes against the frozen snapshot and, block by block, asks the crucial question:
 
@@ -61,7 +61,7 @@ After you've fixed the code by hand, skilo diffs your fixes against the frozen s
 
 Only real mistakes move on. Each one is classified — **missing rule**, **ignored rule**, or **non-systematic slip** — and checked against past cycles for recurrence. The output is a living `skilo-propose.md` draft in **Given/When/Then** format that you refine together.
 
-### 4. `/skilo-apply` — make it stick
+### 4. `/skilo:apply` — make it stick
 
 For each surviving proposal, skilo writes an **eval that must fail on the current skill** (proving it captures the bug), applies the rule, then proves the eval **passes**. No fail-before, no rule. Finally it archives a one-line summary for recurrence detection and wipes the cycle folder.
 
@@ -107,24 +107,36 @@ paths:
 
 ---
 
+## Install
+
+Skilo is a Claude Code plugin. Add the marketplace and install it:
+
+```
+/plugin marketplace add eduardohr-muniz/skilo
+/plugin install skilo
+```
+
+That registers the four `/skilo:*` commands and the `skilo` agent. Then bootstrap per repo with `/skilo:init`.
+
 ## Quick start
 
 ```bash
 # 1. Bootstrap the repo (asks for your code review agent + language)
-scripts/skilo-init.sh --agent cortex-code-reviewer --language pt-BR
-# … or run the /skilo-init command, which asks interactively.
+/skilo:init
 
 # 2. Model delivered a spec? Freeze it:
-/skilo-explore
+/skilo:explore
 
 # 3. Fix the code by hand, then capture the gap:
-/skilo-propose
+/skilo:propose
 
 # 4. Refine the proposals, then apply + validate:
-/skilo-apply
+/skilo:apply
 ```
 
 ### The `skilo-init.sh` script
+
+`/skilo:init` runs this scaffolding script for you (from the plugin directory, via `${CLAUDE_PLUGIN_ROOT}`). You can also run it directly against a repo:
 
 ```
 scripts/skilo-init.sh [--agent <name>] [--language <tag>] [--root <dir>] [--force]
@@ -157,15 +169,18 @@ Idempotent — it never overwrites an existing `config.yaml` unless you pass `--
 ## Layout
 
 ```
-skilo/
+skilo/                           # the plugin repo
+├── .claude-plugin/
+│   ├── plugin.json              # plugin manifest
+│   └── marketplace.json         # marketplace catalog (one plugin: skilo)
 ├── agents/skilo.md              # the skilo agent (full spec)
-├── commands/skilo/
-│   ├── init.md                  # /skilo-init
-│   ├── explore.md               # /skilo-explore
-│   ├── propose.md               # /skilo-propose
-│   └── apply.md                 # /skilo-apply
-├── scripts/skilo-init.sh        # scaffolding script
-└── skilo/                       # per-repo working folder (created by init)
+├── commands/
+│   ├── init.md                  # /skilo:init
+│   ├── explore.md               # /skilo:explore
+│   ├── propose.md               # /skilo:propose
+│   └── apply.md                 # /skilo:apply
+├── scripts/skilo-init.sh        # scaffolding script (run via ${CLAUDE_PLUGIN_ROOT})
+└── skilo/                       # per-repo working folder (created by init, in YOUR repo)
     ├── config.yaml
     ├── cycles/
     └── archive/

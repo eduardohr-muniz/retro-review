@@ -50,7 +50,7 @@ Freezes the worktree snapshot — what the model just delivered, **before** you 
 **HEAD:** <short-hash>
 **Files:** N touched
 
-Fix the code by hand. When done, run `/skilo-propose`.
+Fix the code by hand. When done, run `/skilo:propose`.
 ```
 
 **Output (open cycle)**
@@ -59,7 +59,7 @@ Fix the code by hand. When done, run `/skilo-propose`.
 ## Cycle already in progress
 
 There's already a cycle folder for an unfinished cycle (<feature>).
-Discard it and start over, or finish the current one first with `/skilo-propose`?
+Discard it and start over, or finish the current one first with `/skilo:propose`?
 ```
 
 **Guardrails**

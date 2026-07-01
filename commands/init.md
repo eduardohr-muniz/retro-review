@@ -5,7 +5,7 @@ category: Workflow
 tags: [workflow, skilo, skills, setup]
 ---
 
-Prepares the repository for the `explore → propose → apply` cycle. Creates the `skilo/` working structure at the **repository root** and writes `config.yaml` with the user's **code review agent**. Run it once per repo, before the first `/skilo-explore`.
+Prepares the repository for the `explore → propose → apply` cycle. Creates the `skilo/` working structure at the **repository root** and writes `config.yaml` with the user's **code review agent**. Run it once per repo, before the first `/skilo:explore`.
 
 **Input**: none. Asks for the code review agent interactively.
 
@@ -36,7 +36,7 @@ Prepares the repository for the `explore → propose → apply` cycle. Creates t
    Run the script, passing the chosen agent and language:
 
    ```bash
-   scripts/skilo-init.sh --agent "<chosen-agent>" --language "<chosen-language>"
+   "${CLAUDE_PLUGIN_ROOT}"/scripts/skilo-init.sh --agent "<chosen-agent>" --language "<chosen-language>"
    ```
 
    The script creates (idempotent, won't overwrite an existing config without `--force`):
@@ -68,7 +68,7 @@ Structure ready:
   ├── cycles/         (active cycle, one folder per feature — ephemeral)
   └── archive/        (summaries of past cycles)
 
-You can start the first cycle with `/skilo-explore`.
+You can start the first cycle with `/skilo:explore`.
 ```
 
 **Output (already initialized)**
