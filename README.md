@@ -93,6 +93,9 @@ The evals skilo creates don't live here — **they go to the target skill**, bec
 # The user's code review agent — skilo suggests improvements for it.
 code_review_agent: cortex-code-reviewer
 
+# Language skilo writes the propose in and talks to you in (IETF tag: en, pt-BR, es…).
+language: en
+
 # Where the working cycles live (relative to the repo root).
 # The current cycle folder is <cycles>/<feature>/.
 paths:
@@ -100,13 +103,15 @@ paths:
   archive: skilo/archive   # lean summaries of past cycles
 ```
 
+`language` controls only skilo's **prose** — the proposals and its conversation with you. Your code, skill files, git branches and eval JSON stay in whatever language they're already in.
+
 ---
 
 ## Quick start
 
 ```bash
-# 1. Bootstrap the repo (asks for your code review agent)
-scripts/skilo-init.sh --agent cortex-code-reviewer
+# 1. Bootstrap the repo (asks for your code review agent + language)
+scripts/skilo-init.sh --agent cortex-code-reviewer --language pt-BR
 # … or run the /skilo-init command, which asks interactively.
 
 # 2. Model delivered a spec? Freeze it:
@@ -122,11 +127,12 @@ scripts/skilo-init.sh --agent cortex-code-reviewer
 ### The `skilo-init.sh` script
 
 ```
-scripts/skilo-init.sh [--agent <name>] [--root <dir>] [--force]
+scripts/skilo-init.sh [--agent <name>] [--language <tag>] [--root <dir>] [--force]
 
-  --agent <name>   Code review agent name/path (default: codereview)
-  --root  <dir>    Repo root where skilo/ is created (default: current dir)
-  --force          Overwrite an existing config.yaml
+  --agent    <name>   Code review agent name/path (default: codereview)
+  --language <tag>    Language skilo writes/talks in — IETF tag (default: en)
+  --root     <dir>    Repo root where skilo/ is created (default: current dir)
+  --force             Overwrite an existing config.yaml
 ```
 
 Idempotent — it never overwrites an existing `config.yaml` unless you pass `--force`.

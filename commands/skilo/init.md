@@ -23,28 +23,36 @@ Prepares the repository for the `explore → propose → apply` cycle. Creates t
 
    Accept a name or path (e.g. `codereview`, `cortex-code-reviewer`, `cortex-arch-front/codereview`). This value becomes `code_review_agent` in `config.yaml`.
 
-3. **Scaffold**
+3. **Ask for the language**
 
-   Run the script, passing the chosen agent:
+   Use the **AskUserQuestion tool**:
+
+   > Which language should skilo write the propose in and talk to you in?
+
+   Accept an IETF tag (e.g. `en`, `pt-BR`, `es`). This becomes `language` in `config.yaml`. Default to `en` if the user doesn't care.
+
+4. **Scaffold**
+
+   Run the script, passing the chosen agent and language:
 
    ```bash
-   scripts/skilo-init.sh --agent "<chosen-agent>"
+   scripts/skilo-init.sh --agent "<chosen-agent>" --language "<chosen-language>"
    ```
 
    The script creates (idempotent, won't overwrite an existing config without `--force`):
 
    ```
    skilo/
-   ├── config.yaml         # code_review_agent + paths
+   ├── config.yaml         # code_review_agent + language + paths
    ├── cycles/             # active cycle, one folder per feature (ephemeral)
    └── archive/            # summaries of past cycles
    ```
 
    To reconfigure an already-initialized repo (step 1 confirmed), add `--force`.
 
-4. **Confirm**
+5. **Confirm**
 
-   Report the path of the created structure and the `code_review_agent` written.
+   Report the path of the created structure, the `code_review_agent` and the `language` written.
 
 **Output**
 
@@ -53,6 +61,7 @@ Prepares the repository for the `explore → propose → apply` cycle. Creates t
 
 **Root:** <repo-root>/skilo/
 **Code review agent:** <agent>
+**Language:** <language>
 
 Structure ready:
   ├── config.yaml

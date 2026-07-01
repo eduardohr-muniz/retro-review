@@ -41,13 +41,18 @@ Before any phase, read `skilo/config.yaml` at the root. It says **which is the c
 # The user's code review agent — skilo suggests improvements for it.
 code_review_agent: codereview # agent name/path (e.g. codereview, cortex-arch-front/codereview)
 
+# Language skilo writes the propose in and talks to the user in.
+language: en # IETF tag (e.g. en, pt-BR, es)
+
 # Where the cycles live (relative to the repo root). Defaults below.
 paths:
   cycles: skilo/cycles     # one folder per feature for the active cycle
   archive: skilo/archive   # lean summaries of past cycles
 ```
 
-Use `code_review_agent` to target the improvement suggestion in `propose` and the optional adjustment in `apply`. Use `paths` for every write path — the current cycle folder is `<cycles>/<feature>/`. Never hardcode `skilo/cycles` if the config points elsewhere.
+Use `code_review_agent` to target the improvement suggestion in `propose` and the optional adjustment in `apply`. Use `language` for every message you write to the user and for the prose in `skilo-propose.md` (the triage questions, the Given/When/Then text, the summaries). Use `paths` for every write path — the current cycle folder is `<cycles>/<feature>/`. Never hardcode `skilo/cycles` if the config points elsewhere.
+
+`language` governs skilo's **prose**, not code: keep code, file/skill names, git branches, eval JSON and the archived one-liners' identifiers as they are — only the human-facing writing follows `language`. If the field is absent, default to English.
 
 The evals that skilo **creates** go to the target skill, not to `skilo/` — each skill carries the cases that test it (`<target-skill>/evals/evals.json` and `.../trigger_evals.json`).
 
@@ -241,6 +246,7 @@ At the end, always in this order:
 - **Lean skill.** When adjusting, keep it simple and objective: no redundancy, no code block repeated in several places. Group compactly and readably — if the same rule already exists, reinforce the existing one instead of duplicating.
 - **The cycle folder is ephemeral.** One cycle at a time; `apply` archives a lean summary in `archive/` and wipes `cycles/<feature>/`.
 - **Config rules the paths.** Read `skilo/config.yaml` at the root before any phase; use `paths` to write and `code_review_agent` to target the suggestions. Never hardcode a path if the config points elsewhere.
+- **Config rules the language.** Write every user-facing message and the propose prose in `config.language` (default English). Never translate code, names, branches or eval JSON — only the human writing.
 - **Every mistake is also a review failure.** Each proposal carries a suggested check for the `code_review_agent`; `apply` only applies it to the agent if the user confirms.
 - **No skill in the layer → suggest one per architectural layer.** Don't push the rule into a generic skill or create a monolithic skill; propose the skill for the layer where the mistake fell, e.g. (data, infra, domain, presentation/ui...).
 

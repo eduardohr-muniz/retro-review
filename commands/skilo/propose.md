@@ -9,6 +9,8 @@ Detects what **you** changed after `explore`, separates a real model mistake fro
 
 **Input**: none. Requires a snapshot frozen by `/skilo-explore` in `skilo/cycles/<feature>/`.
 
+Write every message to the user and all the prose in `skilo-propose.md` (triage questions, Given/When/Then text) in `config.language` from `skilo/config.yaml` (default `en`). Code, file/skill names and eval JSON stay as they are.
+
 **Steps**
 
 0. **Check the snapshot**

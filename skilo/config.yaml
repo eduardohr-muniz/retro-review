@@ -4,6 +4,10 @@
 # Skilo suggests improvements for it in `propose` and, if you confirm, applies them in `apply`.
 code_review_agent: cortex-code-reviewer
 
+# Language skilo writes the propose in and talks to the user in.
+# Use an IETF tag (e.g. en, pt-BR, es). Skill files/evals stay in their own language.
+language: pt-BR
+
 # Where the working cycles live (relative to the repo root).
 # The current cycle folder is <cycles>/<feature>/.
 paths:
