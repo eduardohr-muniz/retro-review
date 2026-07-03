@@ -55,6 +55,8 @@ flowchart LR
 
 Changed your mind mid-cycle? `/retro-review:discard` drops everything — nothing applied, nothing saved.
 
+**Housekeeping, anytime** — `/retro-review:optimize-skills` sweeps your skills and trims them lean: cuts redundant/padding content, surfaces conflicting rules and stale references, all while their own evals prove behavior didn't change (green before, green after).
+
 > The whole tool turns on one question, asked in `finish`:
 > **Is this a fix for a model mistake, or just your preference?** Preferences and one-off slips are filtered out — only *systematic* mistakes become rules.
 
@@ -76,7 +78,7 @@ Changed your mind mid-cycle? `/retro-review:discard` drops everything — nothin
 /plugin install retro-review
 ```
 
-Registers the five `/retro-review:*` commands and the `retro-review` agent.
+Registers the `/retro-review:*` commands and the `retro-review` agent.
 
 ---
 
