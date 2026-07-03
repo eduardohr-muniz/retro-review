@@ -28,7 +28,8 @@ Those fixes are gold. But they disappear into a git commit, and next week the mo
 
 ```mermaid
 flowchart LR
-    A([bootstrap]):::setup --> B([start])
+    W([skill-warmup]):::setup -. "or" .-> A([bootstrap]):::setup
+    A --> B([start])
     B -- "you review &<br/>fix by hand" --> C([finish])
     C -- "refine<br/>together" --> D([apply]):::win
     C -. "bail out" .-> E([discard]):::bail
@@ -61,6 +62,20 @@ Changed your mind mid-cycle? `/retro-review:discard` drops everything — nothin
 
 > The whole tool turns on one question, asked in `finish`:
 > **Is this a fix for a model mistake, or just your preference?** Preferences and one-off slips are filtered out — only *systematic* mistakes become rules.
+
+---
+
+## Commands at a glance
+
+| Command | When | What it does |
+|---|---|---|
+| `/retro-review:bootstrap` | once per repo | Empty setup — writes `config.yaml` and asks which agent reviews your code. |
+| `/retro-review:skill-warmup` | once, early (instead of bootstrap) | **Phase zero.** Reads the project, infers its architecture, and through a chat scaffolds **one skill per layer** seeded with best practices — then offers to create a code-review agent and wires it in. |
+| `/retro-review:start` | model just delivered | Freezes the delivery across every nested repo — *before* you touch it. |
+| `/retro-review:finish` | after your hand-review | Diffs your fixes, triages mistake vs. preference, writes eval-backed proposals + a utilization score. |
+| `/retro-review:apply` | proposals ready | Applies each rule and proves it with an eval (fail before → pass after), archives a lean summary, wipes the cycle. |
+| `/retro-review:discard` | changed your mind | Drops the open cycle — nothing applied, nothing saved. |
+| `/retro-review:optimize-skills` | anytime (housekeeping) | Trims skills lean — cuts redundancy, surfaces conflicts and stale references — with each skill's evals proving behavior didn't change. |
 
 ---
 
