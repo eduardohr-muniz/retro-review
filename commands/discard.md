@@ -1,5 +1,5 @@
 ---
-name: "/retro-review:discard"
+name: "retro-review:discard"
 description: Drops the open cycle without applying anything — wipes the cycle folder, archives nothing
 category: Workflow
 tags: [workflow, retro-review, skills]

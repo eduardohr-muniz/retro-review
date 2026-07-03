@@ -1,5 +1,5 @@
 ---
-name: "/retro-review:start"
+name: "retro-review:start"
 description: Freezes the state the model delivered, before your manual review/fix — the baseline the cycle measures against
 category: Workflow
 tags: [workflow, retro-review, skills]
@@ -49,13 +49,14 @@ Freezes the worktree snapshot — what the model just delivered, **before** you 
 
    ## Repos and HEAD
 
-   | Repo | Branch | HEAD |
-   |---|---|---|
+   | Repo     | Branch   | HEAD     |
+   | -------- | -------- | -------- |
    | `<repo>` | <branch> | `<head>` |
 
    ## Files touched (<total>)
 
    ### <repo> (<n>)
+
    - `<path>` <one-line note if useful>
 
    ## Note

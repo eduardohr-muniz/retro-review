@@ -1,5 +1,5 @@
 ---
-name: "/retro-review:bootstrap"
+name: "retro-review:bootstrap"
 description: Bootstraps retro-review — creates the `retro-review/` folder at the root and asks which is your code review agent
 category: Workflow
 tags: [workflow, retro-review, skills, setup]

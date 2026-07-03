@@ -1,5 +1,5 @@
 ---
-name: "/retro-review:finish"
+name: "retro-review:finish"
 description: Detects your fixes, separates mistake from preference and writes Given/When/Then proposals
 category: Workflow
 tags: [workflow, retro-review, skills]
