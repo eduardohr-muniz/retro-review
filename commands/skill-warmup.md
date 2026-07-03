@@ -54,6 +54,8 @@ If `retro-review/config.yaml` exists, write every message to the user in its `la
 
    Seed each `SKILL.md` with a **sharp, lean set of rules** drawn from the conversation — the layer's best practices plus the user's tastes, stated imperatively. Same discipline as the rest of retro-review: **subtract before you add** — no padding, at most one example per rule and only when ambiguous, no tutorial prose. Scope each skill's `description` to its layer so it triggers only there. Don't overwrite an existing skill without asking; extend it instead.
 
+   **Examples are generic** — every code example in `SKILL.md`, `template.md`, examples and `references/` uses placeholder names (`MyModel`, `MyService`, `MyRepository`, `foo`, `bar`, `Widget`), never a real domain name lifted from the project (`ProductModel`, `CheckoutService`). The skill teaches a pattern, not a feature; a concrete domain name makes it read as if the rule only applies to that one entity.
+
 5. **Offer the code-review agent — and wire it up**
 
    Now that the skills exist, propose creating a **code-review agent** that reviews changes against these very layers and rules. **Ask** before creating it. If the user accepts:
@@ -104,6 +106,7 @@ Once you pick, I'll map the layers to skills.
 - **Detect, then confirm** — never scaffold on a guessed architecture; the user confirms the stack, the pattern and the layer mapping first.
 - **One skill per layer, never a monolith** — mirrors retro-review's rule; a mistake in any layer already has a home.
 - **Lean seed** — sharp imperative rules from the conversation, not a best-practices essay. Subtract before you add.
+- **Generic examples only** — placeholder names (`MyModel`, `foo`, `bar`), never a real domain name from the project. A skill teaches a pattern, not a feature.
 - **Suggest, don't rewrite** — structural improvements are proposals the user accepts; this command creates skills and (optionally) an agent, it doesn't refactor their code.
 - **Don't overwrite** an existing skill or `config.yaml` without asking.
 - **The agent is optional but the config isn't** — always leave `config.yaml` ready so `/retro-review:start` can run next.

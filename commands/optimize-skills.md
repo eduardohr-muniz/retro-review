@@ -57,6 +57,7 @@ Write every message to the user in `config.language` from `retro-review/config.y
    - **Extract** — move each detail block into `references/<topic>.md`; replace it in `SKILL.md` with a one-line pointer to the reference. The rule stays; the detail loads on demand.
    - **Split** — create the new per-layer skill via `skill-creator`, following the pattern (`SKILL.md` + `template.md` + `evals/` + `references/`). Move the off-layer rules **and their evals** into it, scope its `description` to the layer so it triggers there, and leave a pointer in the original if the two still relate. Delegate the creation to `skill-creator`.
    - **Preserve names and structure** for whatever stays; the always-loaded `SKILL.md` must come out **leaner** in every case. Any skill touched (or created) must follow the canonical pattern — `SKILL.md` + `template.md` + `evals/` (`evals.json`, `trigger_evals.json`) + `references/`; normalize a skill that doesn't before optimizing it.
+   - **Genericize examples as you move them** — when extracting to `references/` or splitting into a new skill, replace any real domain name in the example code (`ProductModel`, `CheckoutService`) with a generic placeholder (`MyModel`, `MyService`, `foo`, `bar`). This is a rewrite of the *illustration*, not the *rule* — it doesn't touch what any eval asserts. A skill teaches a pattern, not a feature.
 
 6. **Prove behavior held**
 
@@ -110,6 +111,7 @@ Add an eval so a future run can extract to references or split it safely.
 - **Evals move with the rules** — a split migrates each rule's content *and* triggering evals to the new skill; green before, green after in the new home.
 - **Progressive disclosure** — `SKILL.md` holds the rules; `references/` holds the detail the model reads on demand. The always-loaded `SKILL.md` must get leaner every time.
 - **Conflicts are surfaced, not resolved** — always ask which rule wins.
+- **Examples stay generic** — placeholder names (`MyModel`, `foo`, `bar`), never a real domain name from the codebase. Genericizing an example rewrites the illustration, not the rule — no eval changes.
 - **Check recurrence before cutting an example** — a repeated mistake's example is deliberate emphasis.
 - **Ask before any structural move or removal**; a skill with no evals gets trim-only.
 - **A red eval after a move means revert** — a failed optimization, never an accepted trade-off.
