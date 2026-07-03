@@ -44,6 +44,8 @@ flowchart LR
 /retro-review:bootstrap
 ```
 
+**Or start warm** — instead of an empty setup, `/retro-review:skill-warmup` reads your project, infers its architecture (Clean Arch, DDD, hexagonal…), and through a chat about how you like to build, scaffolds **one skill per layer** seeded with best practices — then offers to create a code-review agent and wires it in. Phase zero: seed the rules before the model even makes a mistake.
+
 **Then, every time the model delivers a feature:**
 
 | Step | Command | You do |

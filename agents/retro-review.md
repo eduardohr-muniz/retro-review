@@ -94,6 +94,28 @@ Bootstraps the repository for the cycle. Run it once per repo, before the first 
 
 ---
 
+## `/retro-review:skill-warmup`
+
+Phase zero. Reads the project, infers its architecture (Clean Arch, DDD, hexagonal, layered, feature-first), and — through a conversation about the user's tastes — scaffolds **one skill per architectural layer**, seeded with lean best-practice rules. Then offers to create a **code-review agent** tuned to those layers and wires it into `config.yaml`.
+
+1. **Detect, then confirm** the stack and architecture from manifests and folder naming — never scaffold on a guess.
+2. **Map layers → skills** (one per layer, never a monolith); let the user add/drop/rename.
+3. **Converse** per layer to capture conventions as rules, and proactively suggest structural improvements (as proposals, not rewrites).
+4. **Scaffold** each layer skill via `skill-creator`, seeded with sharp imperative rules — subtract before you add, no tutorial prose.
+5. **Offer the code-review agent**; if accepted, create it from the captured rules and run `retro-init.sh --agent <new-agent> --language <lang>` to point `code_review_agent` at it. Either way, leave `config.yaml` ready.
+
+Run it once, early — it complements (and can stand in for) `bootstrap`. **Warmup seeds the rules; the cycle sharpens them.**
+
+**Setup only — not part of the cycle.**
+
+---
+
+## `/retro-review:optimize-skills`
+
+Housekeeping, anytime. Sweeps skills and trims them lean — cuts redundancy/padding, surfaces conflicting rules and stale references, merges cross-skill overlap — while each skill's own **evals prove behavior didn't change** (green before, green after). Form only, never behavior; a red eval after an edit means revert. Ask before removing any whole rule; check `archive/` before cutting an example of a recurring mistake.
+
+---
+
 ## `/retro-review:start`
 
 Freezes the current state — what the model just delivered, before you review and fix it.

@@ -1,7 +1,7 @@
 {
   "name": "retro-review",
   "displayName": "Retro Review",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "license": "MIT",
   "description": "Turn your code reviews into skill rules that stick. A cycle — bootstrap → start-review → finish-review → apply (or discard) — that captures the gap between what the model delivered and what you fixed by hand, and turns systematic mistakes into eval-validated skill rules. Fast multi-repo snapshots for monorepos.",
   "author": {
