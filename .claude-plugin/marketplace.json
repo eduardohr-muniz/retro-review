@@ -1,15 +1,15 @@
 {
-  "name": "skilo",
+  "name": "retro-review",
   "owner": {
     "name": "Eduardo Muniz",
     "email": "eduardohr.muniz@gmail.com"
   },
-  "description": "Skilo — turn your code reviews into skill rules that stick.",
+  "description": "Retro Review — turn your code reviews into skill rules that stick.",
   "plugins": [
     {
-      "name": "skilo",
+      "name": "retro-review",
       "source": "./",
-      "description": "Turn your code reviews into skill rules that stick — init → explore → propose → apply."
+      "description": "Turn your code reviews into skill rules that stick — bootstrap → start-review → finish-review → apply."
     }
   ]
 }

@@ -1,195 +1,104 @@
 <div align="center">
 
-# 🧠 skilo
+# 🧠 retro-review
 
-**Turn your code reviews into skill rules that stick.**
+### Turn your code reviews into skill rules that stick.
 
-`init` → `explore` → `propose` → `apply`
+*The model writes the code. You fix the last 10% by hand. Retro Review learns from those fixes so the same mistake never comes back.*
 
-*The model implements a spec. You fix it by hand. Skilo captures the gap — and makes sure the same mistake never ships twice.*
+![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-6C4FF6?style=flat-square)
+![Monorepo](https://img.shields.io/badge/monorepo-ready-1f8f4e?style=flat-square)
+![Deps](https://img.shields.io/badge/deps-git_%2B_bash-333?style=flat-square)
 
 </div>
 
 ---
 
-## The problem
+## The pain it solves
 
-You ask a model to implement a spec. It gets you 90% there. Then you review the diff and fix the last 10% by hand before pushing — a datasource that threw instead of returning a result, a widget missing a loading state, a DTO with the wrong nullability.
+You ask a model to implement something. It gets you 90% of the way. Then you review the diff and fix the last 10% by hand before pushing — the small corrections that are the real difference between *what the model writes* and *what your codebase accepts*.
 
-Those fixes are **gold**. They're the exact difference between what the model produces and what your codebase actually accepts. But they vanish into a git commit, and next week the model makes the *same* mistake again.
+Those fixes are gold. But they disappear into a git commit, and next week the model makes **the same mistake again**.
 
-**Skilo closes that loop.** It captures the gap between what the model delivered and what you left correct, separates a real mistake from your own preference, and turns only the systematic mistakes into skill rules — each one validated by an eval that proves it would have caught the bug.
-
----
-
-## How it works
-
-Four commands, one cycle per feature:
-
-```
-/skilo:init      ── one-time setup: scaffold skilo/, pick your code review agent
-      │
-      ▼
-/skilo:explore   ── freeze what the model delivered (before you touch it)
-      │
-      │   … you review and fix the code by hand …
-      │
-      ▼
-/skilo:propose   ── diff your fixes, separate mistake from preference,
-      │              write Given/When/Then proposals
-      │
-      │   … you refine the proposals together with skilo …
-      │
-      ▼
-/skilo:apply     ── validate each rule with an eval (fail-before → pass-after),
-                     archive a lean summary, wipe the cycle
-```
-
-### 1. `/skilo:init` — bootstrap
-
-Run once per repo. Scaffolds the `skilo/` working folder and asks **which is your code review agent** — the agent skilo will later suggest checks for.
-
-### 2. `/skilo:explore` — freeze the delivery
-
-Snapshots the worktree exactly as the model handed it to you, using `git add -N` so even untracked files show up in the diff without committing. This is the zero mark. **Nothing is analyzed here** — you're just marking the "before".
-
-### 3. `/skilo:propose` — capture the gap
-
-After you've fixed the code by hand, skilo diffs your fixes against the frozen snapshot and, block by block, asks the crucial question:
-
-> Is this a **fix for a model mistake**, or **your preference** (rename, move, style)?
-
-Only real mistakes move on. Each one is classified — **missing rule**, **ignored rule**, or **non-systematic slip** — and checked against past cycles for recurrence. The output is a living `skilo-propose.md` draft in **Given/When/Then** format that you refine together.
-
-### 4. `/skilo:apply` — make it stick
-
-For each surviving proposal, skilo writes an **eval that must fail on the current skill** (proving it captures the bug), applies the rule, then proves the eval **passes**. No fail-before, no rule. Finally it archives a one-line summary for recurrence detection and wipes the cycle folder.
+**Retro Review closes that loop.** It freezes what the model delivered, diffs it against your hand-fixes, and — after you confirm which changes were real mistakes (not just preferences) — turns each systematic mistake into a **skill rule backed by an eval** that proves it would have caught the bug. Your skills get sharper every review, automatically.
 
 ---
 
-## File structure
+## How to use it
 
-Skilo's working cycle lives in a `skilo/` folder at the **root of your repository**, governed by a `config.yaml`:
+```mermaid
+flowchart LR
+    A([bootstrap]):::setup --> B([start])
+    B -- "you review &<br/>fix by hand" --> C([finish])
+    C -- "refine<br/>together" --> D([apply]):::win
+    C -. "bail out" .-> E([discard]):::bail
 
-```
-<repo-root>/skilo/
-├── config.yaml                 # your code review agent + paths
-├── cycles/                     # active cycles, one folder per feature (ephemeral)
-│   └── <feature>/              # current cycle — wiped on apply
-│       ├── snapshot.md         # what the model delivered (explore)
-│       ├── skilo-propose.md    # Given/When/Then proposals (propose)
-│       └── .snapshot-*.diff    # cycle diffs
-└── archive/                    # lean per-cycle summaries (recurrence detection)
-    └── <feature>-<date>.md
+    classDef setup fill:#6C4FF6,color:#fff,stroke:none;
+    classDef win fill:#1f8f4e,color:#fff,stroke:none;
+    classDef bail fill:#8a8a8a,color:#fff,stroke:none;
 ```
 
-The feature name is derived from your current git branch (`feature/login-flow` → `login-flow`); on `main` or a detached HEAD, skilo asks for it.
+**Once per repo** — set it up and tell it which agent reviews your code:
 
-The evals skilo creates don't live here — **they go to the target skill**, because each skill carries the cases that test it (`<skill>/evals/evals.json` and `.../trigger_evals.json`).
-
-### `config.yaml`
-
-```yaml
-# The user's code review agent — skilo suggests improvements for it.
-code_review_agent: cortex-code-reviewer
-
-# Language skilo writes the propose in and talks to you in (IETF tag: en, pt-BR, es…).
-language: en
-
-# Where the working cycles live (relative to the repo root).
-# The current cycle folder is <cycles>/<feature>/.
-paths:
-  cycles: skilo/cycles     # one folder per feature for the active cycle
-  archive: skilo/archive   # lean summaries of past cycles
+```
+/retro-review:bootstrap
 ```
 
-`language` controls only skilo's **prose** — the proposals and its conversation with you. Your code, skill files, git branches and eval JSON stay in whatever language they're already in.
+**Then, every time the model delivers a feature:**
+
+| Step | Command | You do |
+|---|---|---|
+| 1 | `/retro-review:start` | Freeze the delivery — *before* you touch it. |
+| 2 | — | **Review and fix the code by hand**, like you always do. |
+| 3 | `/retro-review:finish` | It diffs your fixes and asks, block by block: *model mistake or your preference?* Only mistakes become proposals. |
+| 4 | `/retro-review:apply` | Refine together, then it applies each rule and validates it with an eval (must fail before, pass after). |
+
+Changed your mind mid-cycle? `/retro-review:discard` drops everything — nothing applied, nothing saved.
+
+> The whole tool turns on one question, asked in `finish`:
+> **Is this a fix for a model mistake, or just your preference?** Preferences and one-off slips are filtered out — only *systematic* mistakes become rules.
+
+---
+
+## What you get
+
+- **🧩 Skill rules that stick** — every rule is validated by an eval (fails on the old skill, passes on the new one). No hand-waving.
+- **📊 Utilization score** — `finish` tells you how much of the model's code you kept (*"you had 92% utilization"*), so you can watch whether the model is getting better on your codebase over time.
+- **⚡ Monorepo-native** — one snapshot spans every nested git repo under your root, auto-discovered and captured in parallel. No per-repo config, and it's fast (no full-worktree scans).
+- **✂️ Lean by design** — adjustments are the smallest edit that passes the eval. Your skills stay a set of sharp rules, not a growing pile of examples.
 
 ---
 
 ## Install
 
-Skilo is a Claude Code plugin. Add the marketplace and install it:
-
 ```
-/plugin marketplace add eduardohr-muniz/skilo
-/plugin install skilo
+/plugin marketplace add eduardohr-muniz/retro-review
+/plugin install retro-review
 ```
 
-That registers the four `/skilo:*` commands and the `skilo` agent. Then bootstrap per repo with `/skilo:init`.
-
-## Quick start
-
-```bash
-# 1. Bootstrap the repo (asks for your code review agent + language)
-/skilo:init
-
-# 2. Model delivered a spec? Freeze it:
-/skilo:explore
-
-# 3. Fix the code by hand, then capture the gap:
-/skilo:propose
-
-# 4. Refine the proposals, then apply + validate:
-/skilo:apply
-```
-
-### The `skilo-init.sh` script
-
-`/skilo:init` runs this scaffolding script for you (from the plugin directory, via `${CLAUDE_PLUGIN_ROOT}`). You can also run it directly against a repo:
-
-```
-scripts/skilo-init.sh [--agent <name>] [--language <tag>] [--root <dir>] [--force]
-
-  --agent    <name>   Code review agent name/path (default: codereview)
-  --language <tag>    Language skilo writes/talks in — IETF tag (default: en)
-  --root     <dir>    Repo root where skilo/ is created (default: current dir)
-  --force             Overwrite an existing config.yaml
-```
-
-Idempotent — it never overwrites an existing `config.yaml` unless you pass `--force`.
+Registers the five `/retro-review:*` commands and the `retro-review` agent.
 
 ---
 
-## Core principles
+## Config
 
-| Principle | Why |
-|---|---|
-| **One mistake → one verifiable rule** | If you can't write an eval that fails before and passes after, the rule is too vague. |
-| **A preference never becomes a rule** | Renames, moves and style choices are yours — they don't belong in a skill. |
-| **A non-systematic slip doesn't touch the skill** | The model knew and slipped once; don't inflate the skill with noise. |
-| **Recurrence changes the action** | A repeated mistake calls for a better example or triggering fix — not the same rule again. |
-| **An eval without "fail before" is invalid** | It has to prove it would have caught the bug. |
-| **Every mistake is also a review failure** | Each proposal suggests a concrete check for your `code_review_agent` — applied only if you confirm. |
-| **No skill for the layer? Suggest one per layer** | Don't force a rule into a generic skill or build a monolith — propose a skill per architectural layer (`data`, `infra`, `domain`, `presentation/ui`, …). |
-| **The cycle folder is ephemeral** | One cycle at a time; `apply` archives a lean summary and wipes it. |
+`bootstrap` creates `retro-review/config.yaml` at your repo root:
 
----
-
-## Layout
-
+```yaml
+code_review_agent: codereview   # the agent that reviews your code — retro-review suggests checks for it
+language: en                    # prose only (IETF tag) — your code & skills stay as they are
+paths:
+  cycles: retro-review/cycles
+  archive: retro-review/archive
 ```
-skilo/                           # the plugin repo
-├── .claude-plugin/
-│   ├── plugin.json              # plugin manifest
-│   └── marketplace.json         # marketplace catalog (one plugin: skilo)
-├── agents/skilo.md              # the skilo agent (full spec)
-├── commands/
-│   ├── init.md                  # /skilo:init
-│   ├── explore.md               # /skilo:explore
-│   ├── propose.md               # /skilo:propose
-│   └── apply.md                 # /skilo:apply
-├── scripts/skilo-init.sh        # scaffolding script (run via ${CLAUDE_PLUGIN_ROOT})
-└── skilo/                       # per-repo working folder (created by init, in YOUR repo)
-    ├── config.yaml
-    ├── cycles/
-    └── archive/
-```
+
+The working cycle lives under `retro-review/` and is **ephemeral** — each cycle is wiped on `apply` (or `discard`), leaving only a one-line summary in `archive/` for recurrence detection. The evals it writes go to the **target skill**, because each skill carries the cases that test it.
 
 ---
 
 <div align="center">
 
-*Every mistake the model makes is a rule your skills are missing — and a check your reviewer forgot. Skilo makes both permanent.*
+*Every mistake the model makes is a rule your skills are missing — and a check your reviewer forgot.*
+**Retro Review makes both permanent.**
 
 </div>

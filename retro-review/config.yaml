@@ -1,0 +1,16 @@
+# retro-review/config.yaml — lives at the repository root
+
+# The user's code review agent.
+# Retro Review suggests improvements for it in `finish` and, if you confirm, applies them in `apply`.
+code_review_agent: codereview
+
+# Language retro-review writes the proposals in and talks to the user in.
+# Use an IETF tag (e.g. en, pt-BR, es). Skill files/evals stay in their own language.
+language: en
+
+# Where the working cycles live (relative to the repo root).
+# The current cycle folder is <cycles>/<feature>/.
+# Snapshots auto-discover every nested git repo under the root — no per-repo config needed.
+paths:
+  cycles: retro-review/cycles # one folder per feature: snapshot, proposals and diffs of the active cycle
+  archive: retro-review/archive # lean summaries of past cycles

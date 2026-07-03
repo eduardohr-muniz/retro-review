@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 #
-# skilo-init.sh — scaffolds the `skilo/` folder at the repository root.
+# retro-init.sh — scaffolds the `retro-review/` folder at the repository root.
 #
-# Creates skilo's working structure and writes `config.yaml` with the
+# Creates retro-review's working structure and writes `config.yaml` with the
 # code review agent chosen by the user. Idempotent: never overwrites an
 # existing `config.yaml` (unless --force).
 #
 # Usage:
-#   scripts/skilo-init.sh [--agent <name>] [--language <tag>] [--root <dir>] [--force]
+#   scripts/retro-init.sh [--agent <name>] [--language <tag>] [--root <dir>] [--force]
 #
 # Options:
 #   --agent    <name>   Code review agent name/path (default: codereview)
-#   --language <tag>    Language skilo writes/talks in — IETF tag (default: en)
-#   --root     <dir>    Repo root where `skilo/` is created (default: current dir)
+#   --language <tag>    Language retro-review writes/talks in — IETF tag (default: en)
+#   --root     <dir>    Repo root where `retro-review/` is created (default: current dir)
 #   --force             Overwrite an existing config.yaml
 #
 set -euo pipefail
@@ -35,41 +35,42 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-skilo_dir="$root/skilo"
-config="$skilo_dir/config.yaml"
+retro_dir="$root/retro-review"
+config="$retro_dir/config.yaml"
 
 # 1. Folder structure.
-mkdir -p "$skilo_dir/cycles" "$skilo_dir/archive"
+mkdir -p "$retro_dir/cycles" "$retro_dir/archive"
 
 # `.gitkeep` keeps the ephemeral folders versioned even when empty.
-touch "$skilo_dir/cycles/.gitkeep" "$skilo_dir/archive/.gitkeep"
+touch "$retro_dir/cycles/.gitkeep" "$retro_dir/archive/.gitkeep"
 
 # 2. config.yaml — not overwritten without --force.
 if [[ -f "$config" && $force -eq 0 ]]; then
-  echo "skilo: config.yaml already exists at '$config' — kept (use --force to overwrite)."
+  echo "retro-review: config.yaml already exists at '$config' — kept (use --force to overwrite)."
 else
   cat > "$config" <<YAML
-# skilo/config.yaml — lives at the repository root
+# retro-review/config.yaml — lives at the repository root
 
 # The user's code review agent.
-# Skilo suggests improvements for it in \`propose\` and, if you confirm, applies them in \`apply\`.
+# Retro Review suggests improvements for it in \`finish\` and, if you confirm, applies them in \`apply\`.
 code_review_agent: ${agent}
 
-# Language skilo writes the propose in and talks to the user in.
+# Language retro-review writes the proposals in and talks to the user in.
 # Use an IETF tag (e.g. en, pt-BR, es). Skill files/evals stay in their own language.
 language: ${language}
 
 # Where the working cycles live (relative to the repo root).
 # The current cycle folder is <cycles>/<feature>/.
+# Snapshots auto-discover every nested git repo under the root — no per-repo config needed.
 paths:
-  cycles: skilo/cycles # one folder per feature: snapshot, propose and diffs of the active cycle
-  archive: skilo/archive # lean summaries of past cycles
+  cycles: retro-review/cycles # one folder per feature: snapshot, proposals and diffs of the active cycle
+  archive: retro-review/archive # lean summaries of past cycles
 YAML
-  echo "skilo: config.yaml written at '$config' (code_review_agent: ${agent}, language: ${language})."
+  echo "retro-review: config.yaml written at '$config' (code_review_agent: ${agent}, language: ${language})."
 fi
 
 # 3. Summary.
-echo "skilo: structure ready at '$skilo_dir/'"
+echo "retro-review: structure ready at '$retro_dir/'"
 echo "  ├── config.yaml"
 echo "  ├── cycles/         (active cycle, one folder per feature — ephemeral)"
 echo "  └── archive/        (lean summaries of past cycles)"

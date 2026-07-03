@@ -1,12 +1,12 @@
 {
-  "name": "skilo",
-  "displayName": "Skilo",
-  "description": "Turn your code reviews into skill rules that stick. A four-command cycle — init → explore → propose → apply — that captures the gap between what the model delivered and what you fixed by hand, and turns systematic mistakes into eval-validated skill rules.",
+  "name": "retro-review",
+  "displayName": "Retro Review",
+  "description": "Turn your code reviews into skill rules that stick. A cycle — bootstrap → start-review → finish-review → apply (or discard) — that captures the gap between what the model delivered and what you fixed by hand, and turns systematic mistakes into eval-validated skill rules. Fast multi-repo snapshots for monorepos.",
   "author": {
     "name": "Eduardo Muniz",
     "url": "https://github.com/eduardohr-muniz"
   },
-  "homepage": "https://github.com/eduardohr-muniz/skilo",
-  "repository": "https://github.com/eduardohr-muniz/skilo",
-  "keywords": ["skills", "code-review", "workflow", "evals"]
+  "homepage": "https://github.com/eduardohr-muniz/retro-review",
+  "repository": "https://github.com/eduardohr-muniz/retro-review",
+  "keywords": ["skills", "code-review", "workflow", "evals", "monorepo"]
 }
