@@ -75,7 +75,7 @@ Changed your mind mid-cycle? `/retro-review:discard` drops everything — nothin
 | `/retro-review:finish` | after your hand-review | Diffs your fixes, triages mistake vs. preference, writes eval-backed proposals + a utilization score. |
 | `/retro-review:apply` | proposals ready | Applies each rule and proves it with an eval (fail before → pass after), archives a lean summary, wipes the cycle. |
 | `/retro-review:discard` | changed your mind | Drops the open cycle — nothing applied, nothing saved. |
-| `/retro-review:optimize-skills` | anytime (housekeeping) | Trims skills lean — cuts redundancy, surfaces conflicts and stale references — with each skill's evals proving behavior didn't change. |
+| `/retro-review:optimize-skills` | anytime (housekeeping) | Diagnoses each skill's shape, then **trims** the prose, **extracts** detail into `references/`, or **splits** a multi-layer skill into per-layer skills — the set of rules unchanged, each skill's evals proving behavior held. |
 
 ---
 

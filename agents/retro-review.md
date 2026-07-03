@@ -112,7 +112,13 @@ Run it once, early — it complements (and can stand in for) `bootstrap`. **Warm
 
 ## `/retro-review:optimize-skills`
 
-Housekeeping, anytime. Sweeps skills and trims them lean — cuts redundancy/padding, surfaces conflicting rules and stale references, merges cross-skill overlap — while each skill's own **evals prove behavior didn't change** (green before, green after). Form only, never behavior; a red eval after an edit means revert. Ask before removing any whole rule; check `archive/` before cutting an example of a recurring mistake.
+Housekeeping, anytime. First **diagnoses the shape** of each skill, then applies one of three moves — because a giant skill is rarely fixed by editing its prose:
+
+- **Trim** — cut redundancy/padding, surface conflicting rules, drop stale references, merge overlap. For a right-sized but wordy skill.
+- **Extract to references** — an oversized `SKILL.md`: move detail, long examples and edge-cases into `references/*.md`, leaving the always-loaded `SKILL.md` as lean rules + pointers (progressive disclosure).
+- **Split by layer** — a skill mixing multiple layers/concerns: carve the off-layer part into its **own per-layer skill** (same lens as `skill-warmup`), migrating its rules **and evals**.
+
+Invariant across all three: the **set of rules is preserved** — nothing added or removed; optimization only changes where a rule lives and how it reads. Each affected skill's **evals prove it** (green before, green after; a moved rule's eval must stay green in its new home). A red eval after a move means revert. Don't default to trim — a 500-line skill spanning two layers needs a split, not sharper wording. Any skill touched or created follows the canonical pattern (`SKILL.md` + `template.md` + `evals/` + `references/`). Ask before any structural move or removal; check `archive/` before cutting a recurring mistake's example; a skill with no evals gets trim-only.
 
 ---
 
